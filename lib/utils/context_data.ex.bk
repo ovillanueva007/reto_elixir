@@ -1,0 +1,9 @@
+defmodule RetoElixir.Utils.ContextData do
+
+  defstruct [:message_id, :x_request_id]
+
+  @type t :: %__MODULE__{
+          message_id: String.t(),
+          x_request_id: String.t()
+        }
+end
