@@ -15,11 +15,24 @@ defmodule RetoElixir.UseCase.SignUp.SignUpUseCase do
           context: %ContextData{}
         } = command
       ) do
-    Logger.info("Inside SignUpUseCase...")
+    Logger.info("Inside SignUpUseCase.execute...")
 
-    case @signup_gateway_write.create_user(command) do
-      {:ok, response} -> {:ok, response}
+    with {:ok, result} <- @signup_gateway_write.create_user(command) do
+      {:ok, result}
+    else
       error -> error
     end
+
+    Logger.info("Leaving SignUpUseCase.execute...")
+
+    # with {:ok, result} <-
+    #       @signup_gateway_write.create_user(command) do
+    #  Logger.info("Inside SignUpUseCase124124124...")
+    #  {:ok, result}
+    # else
+    #  error ->
+    #    error
+    #    Logger.info("Inside Errorrrrr")
+    # end
   end
 end

@@ -10,6 +10,7 @@ defmodule RetoElixir.Infrastructure.EntryPoint.SignUp.SignUpBuild do
 
     with {:ok, user_dto} <-
            UserDto.new(
+            #body_data[:"email"] || "",
              Map.get(body_data, :email, ""),
              Map.get(body_data, :password, ""),
              Map.get(body_data, :name, "")

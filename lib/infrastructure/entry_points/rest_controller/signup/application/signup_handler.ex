@@ -28,17 +28,23 @@ defmodule RetoElixir.Infrastructure.EntryPoint.SignUp.SignUpHandler do
     message_id = Map.get(headers, :MESSAGE_ID, "")
     body = conn.body_params |> DataTypeUtils.normalize()
 
-    with {:ok, dto_command} <- SignUpBuild.build_dto_command(body, headers),
-         {:ok, result} <- SignUpUseCase.execute(dto_command),
-         {:ok, response} <- SignUpBuildRes.build(result) do
-      ResponseSuccessBody.build_response(
-        response,
-        message_id
-      )
+    #validar header
+    #validar body
+    with {:ok, dto_command} <- SignUpBuild.build_dto_command(body, headers) do
+      #{:ok, result} <- SignUpUseCase.execute(dto_command) do
+         #{:ok, response} <- SignUpBuildRes.build(result) do
+      #ResponseSuccessBody.build_response(
+      #  response,
+      #  message_id
+      #)
+      #|>
+      #
+      SignUpUseCase.execute(dto_command)
       |> ResponseController.build_response(conn)
     else
       exception ->
         SignUpHandleError.handle_error(exception, conn, message_id)
     end
+    #Logger.info("Leaving SignUpHandler...")
   end
 end
