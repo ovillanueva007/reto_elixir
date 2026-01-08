@@ -1,4 +1,4 @@
-defmodule RetoElixir.Infrastructure.EntryPoint.SignUp.ValidationBody do
+defmodule RetoElixir.Infrastructure.EntryPoint.SignIn.ValidationBody do
   def validate_body(body) do
     with {:ok, true} <- validate_map(body),
          {:ok, true} <- validate_field_email(body),

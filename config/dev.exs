@@ -12,4 +12,6 @@ config :logger,
   level: :debug
 
 config :reto_elixir,
-  signup_gateway_write: RetoElixir.DrivenAdapters.Repository.SignUpWriteGateway
+  signup_gateway_write: RetoElixir.DrivenAdapters.Repository.SignUpWriteGateway,
+  signin_gateway_read: RetoElixir.DrivenAdapters.Repository.SignInReadGateway,
+  session_gateway_write: RetoElixir.DrivenAdapters.Repository.SessionWriteGateway

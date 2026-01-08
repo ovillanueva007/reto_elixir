@@ -3,7 +3,7 @@ defmodule RetoElixir.EntryPoints.Shared.EcsModelResponse do
   This module is responsible for building responses.
   """
 
-  @service_name "internal_information_ms"
+  @service_name "reto_elixir_ms"
   @level_error "ERROR"
 
   @derive Jason.Encoder

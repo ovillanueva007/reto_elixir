@@ -8,10 +8,10 @@ defmodule RetoElixir.Infrastructure.EntryPoint.SignUp.SignUpHandler do
 
   alias RetoElixir.UseCase.SignUp.SignUpUseCase
 
-  alias RetoElixir.Infrastructure.EntryPoint.SignUp.SignUpBuildRes
   alias RetoElixir.Shared.ResponseController
   alias RetoElixir.Infrastructure.EntryPoint.SignUp.SignUpHandleError
-  alias RetoElixir.Infrastructure.EntryPoint.SignUp.ResponseSuccessBody
+  alias RetoElixir.Infrastructure.EntryPoint.SignUp.ValidationHeaders
+  alias RetoElixir.Infrastructure.EntryPoint.SignUp.ValidationBody
 
   plug(:match)
   plug(:dispatch)
@@ -19,8 +19,6 @@ defmodule RetoElixir.Infrastructure.EntryPoint.SignUp.SignUpHandler do
   @path "/"
 
   post @path do
-    Logger.info("Inside SignUpHandler...")
-
     headers =
       conn.req_headers
       |> DataTypeUtils.normalize_headers()
@@ -28,23 +26,14 @@ defmodule RetoElixir.Infrastructure.EntryPoint.SignUp.SignUpHandler do
     message_id = Map.get(headers, :MESSAGE_ID, "")
     body = conn.body_params |> DataTypeUtils.normalize()
 
-    #validar header
-    #validar body
-    with {:ok, dto_command} <- SignUpBuild.build_dto_command(body, headers) do
-      #{:ok, result} <- SignUpUseCase.execute(dto_command) do
-         #{:ok, response} <- SignUpBuildRes.build(result) do
-      #ResponseSuccessBody.build_response(
-      #  response,
-      #  message_id
-      #)
-      #|>
-      #
-      SignUpUseCase.execute(dto_command)
-      |> ResponseController.build_response(conn)
+    with {:ok, true} <- ValidationHeaders.validate_headers(headers),
+         {:ok, true} <- ValidationBody.validate_body(body),
+         {:ok, dto_command} <- SignUpBuild.build_dto_command(body, headers),
+         {:ok, true} <- SignUpUseCase.execute(dto_command) do
+      ResponseController.build_response(%{}, conn)
     else
       exception ->
         SignUpHandleError.handle_error(exception, conn, message_id)
     end
-    #Logger.info("Leaving SignUpHandler...")
   end
 end

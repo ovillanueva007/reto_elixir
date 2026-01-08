@@ -1,4 +1,4 @@
-defmodule RetoElixir.Infrastructure.EntryPoint.SignUp.ResponseSuccessBody do
+defmodule RetoElixir.Infrastructure.EntryPoint.SignIn.ResponseSuccessBody do
 
   def build_response(response_body, message_id) do
     %{

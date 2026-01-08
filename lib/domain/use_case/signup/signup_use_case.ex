@@ -1,8 +1,8 @@
 defmodule RetoElixir.UseCase.SignUp.SignUpUseCase do
   require Logger
   alias RetoElixir.Domain.Model.Command
-  alias RetoElixir.Model.SignUp.UserDto
   alias RetoElixir.Domain.Model.ContextData
+  alias RetoElixir.Model.Shared.Common.UserDto
 
   @signup_gateway_write Application.compile_env(
                           :reto_elixir,
@@ -15,24 +15,10 @@ defmodule RetoElixir.UseCase.SignUp.SignUpUseCase do
           context: %ContextData{}
         } = command
       ) do
-    Logger.info("Inside SignUpUseCase.execute...")
-
-    with {:ok, result} <- @signup_gateway_write.create_user(command) do
-      {:ok, result}
+    with {:ok, _user} <- @signup_gateway_write.create_user(command) |> IO.inspect() do
+      {:ok, true}
     else
       error -> error
     end
-
-    Logger.info("Leaving SignUpUseCase.execute...")
-
-    # with {:ok, result} <-
-    #       @signup_gateway_write.create_user(command) do
-    #  Logger.info("Inside SignUpUseCase124124124...")
-    #  {:ok, result}
-    # else
-    #  error ->
-    #    error
-    #    Logger.info("Inside Errorrrrr")
-    # end
   end
 end

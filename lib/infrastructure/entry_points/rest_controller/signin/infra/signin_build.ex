@@ -1,20 +1,19 @@
-defmodule RetoElixir.Infrastructure.EntryPoint.SignUp.SignUpBuild do
+defmodule RetoElixir.Infrastructure.EntryPoint.SignIn.SignInBuild do
   require Logger
-  alias RetoElixir.Domain.Model.Command
+  alias RetoElixir.Domain.Model.Query
 
   alias RetoElixir.Model.Shared.Common.UserDto
   alias RetoElixir.Domain.Model.ContextData
 
-  def build_dto_command(body_data, headers) do
+  def build_dto_query(body_data, headers) do
     with {:ok, user_dto} <-
-           UserDto.new(
+           UserDto.new_signin(
             body_data[:email] || "",
-            body_data[:password] || "",
-            body_data[:name] || ""
+            body_data[:password] || ""
            ),
          {:ok, context} <-
            ContextData.new(Map.get(headers, :MESSAGE_ID), Map.get(headers, :X_REQUEST_ID)) do
-      {:ok, %Command{payload: user_dto, context: context}}
+      {:ok, %Query{payload: user_dto, context: context}}
     else
       error -> error
     end
